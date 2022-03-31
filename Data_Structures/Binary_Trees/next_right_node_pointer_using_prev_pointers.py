@@ -28,10 +28,18 @@ class Solution:
 
         while leftmost.left:
 
-            leftmost.left.next = leftmost.right 
+            # Assign 'head' to ensure we can iterate through entire level
 
-            if leftmost.next:
-                leftmost.right.next = leftmost.next.left
+            head = leftmost 
+
+            while head:
+
+                head.left.next = head.right 
+
+                if head.next:
+                    head.right.next = head.next.left
+
+                head = head.next 
 
             leftmost = leftmost.left
 

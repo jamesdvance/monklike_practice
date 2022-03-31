@@ -4,7 +4,7 @@ class Solution:
         From Leetcode's solution
         """
         n = len(nums)
-        result = [0]*n
+        result = [0]*n # can't append, because we're going to iterate backwards
         left = 0 
         right = n - 1
 
