@@ -12,19 +12,21 @@ class Solution:
         Find the node in the BST that the node's value equals val and return the 
         subtree rooted with that node. If such a node does not exist, return null.
 
+        Approach: 
+        1. Need to keep track of whether 
         """
-        if root is None or val == root.val:
-            return root 
 
-        return self.searchBST(root.left, val) if val < root.val \
-            else self.searchBST(root.right, val)
+        if not root.right and not root.left:
+            return 
 
-"""
-Iterative Solution
-"""
-class Solution:
-    def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
-        while root is not None and root.val != val:
-            root = root.left if val < root.val else root.right 
+        if root.val == val:
+            return root
 
-        return root 
+        if root.right:
+            return_node = self.searchBST(root.right,val)
+
+        if not return_node and root.left:
+            return_node = self.searchBST(root.left,val)
+
+        return return_node
+
