@@ -23,7 +23,8 @@ class Solution:
                 * how much operations have we done so far
                 * index of leftmost number remaining in nums, index of rightmost number remaining in nums
             * Recurrence relation
-                * 
+                * to decide whether to take from the left or the right --- 
+                    * 
         """
 
 
