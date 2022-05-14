@@ -1,8 +1,8 @@
 """
 Start: 9:32 PM
 End: 9:50 
-Solve Time:
-Runs Before successful:  
+Solve Time: 3 days
+Runs Before successful:  5-10
 """
 
 # Definition for a binary tree node.
