@@ -63,7 +63,8 @@ class Solution:
 			if node == destination:
 				return True
 
-			if node not in seen:
+			if node not in seen: # this was dangerous - better / more efficient to not do this, but not add it to queue if 
+				# it was already seen
 				for next_node in adj_dict[node]:
 					if next_node == destination:
 						return True
