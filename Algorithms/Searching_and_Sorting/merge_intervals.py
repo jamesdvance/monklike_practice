@@ -1,119 +1,127 @@
 """
-Merge Intervals
+ Merge Intervals
 
-Given an array of intervals where intervals[i] = [starti, endi], 
-merge all overlapping intervals, and return an array of the non-overlapping 
-intervals that cover all the intervals in the input.
+ Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, 
+ and return an array of the non-overlapping intervals that cover all the intervals in the input.
 
 Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
 Output: [[1,6],[8,10],[15,18]]
 Explanation: Since intervals [1,3] and [2,6] overlaps, merge them into [1,6].
 
-Approach: 
+Input: intervals = [[1,4],[4,5]]
+Output: [[1,5]]
+Explanation: Intervals [1,4] and [4,5] are considered overlapping.
 
-Need to merge intervals in a non-overlapping inclusive way
+1 <= intervals.length <= 104
+intervals[i].length == 2
+0 <= starti <= endi <= 104
 
-Will need to capture the existing endpoints of each intervals.
-Can build an array data structure with endpoints, but need to be able to specify 
-If the gap between is an interval or gap between intervals. Makes sense to just build the final data structure
+Rephrase: Condense given list of lists into intervals that all overlap
 
-The obvious pattern is to iterate through the output, and search for the latest endpoint.
-Makes sense to sort by the right interval then sort by the left interval. 
+Input: list of integer lists: Output: list of integer lists
 
+Examples: [[1,4],[4,5]]; [[1,3],[4,5];  [[1,3],[2,6],[3,4],[4,6],[1,18]]
 
- [[1,3],[2,6],[8,10],[15,18]]
+Data structures:
+List to return new intervals
 
+Pseudo:
+sort list by starting point of interval
+iterate_over_each_interval.
+if the starting point is greater than the ending point of the last interval in the returning list, append tothe list
+if starting point is less than or equal to the ending point ofthelast interval +1 update the returned interval with the new ending point
 
-[[1,4],[0,2],[3,5]]
+Examples
+[[1,4],[4,5]]
+ret_list = [1,4]
+ret_list = [1,5]
+
+[[1,3],[4,5]]
+ret_list = [[1,3]]
+ret_list = [[1,5]]
+
+[[1,3],[2,6],[3,4],[4,6],[1,18]]
+sorted_list = [[1,3],[1,18],[2,6],[3,4],[4,6]]
+ret_list [[1,3]]
+ret_list [[1,18]]
+
+[[1,3],[2,6],[3,4],[4,6],[1,18]]
+sorted_list = [[1,3],[1,5],[2,6],[3,4],[4,6]]
+ret_list [[1,3]]
+ret_list [[1,5]]
+ret_list = [[1,6]]
+ret_list = [[]]
 """
-
+from typing import List
 class Solution:
-	def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
 
-		def sort_arr():
-			pass
+        intervals.sort(key=lambda x:x[0]) # sorted in ascending order by first key 
+        ret_list = [intervals[0]]
+        for ivl in intervals[1:]:
+            if ivl[0] > ret_list[-1][1]:
+                ret_list.append(ivl)
+            elif ivl[1] > ret_list[-1][1]:
+                ret_list[-1][1] = ivl[1]
 
-		# Sort by second index first
-		intervals.sort(key=lambda x:x[1])
-
-		sorted_intervals = [None]*len(intervals)
-
-		right_bound = intervals[0][1]
-		total_endings = 0
-		same_start =0 
-		same_end = 1
-		for a in range(1,len(intervals)):
-			
-			if right_bound == intervals[a][1]:
-				#intervals_chunk.append(intervals[a])
-				same_end +=1
-
-			elif right_bound != intervals[a][1]:
-				#if same_end - same_start > 1:
-				intervals_chunk = intervals[same_start:same_end]
-				intervals_chunk.sort(key=lambda x:x[0])
-				sorted_intervals[same_start:same_end] = intervals_chunk
-				#else:
-				#	sorted_intervals[a] = intervals[a]
-
-				same_start = a
-				same_end = a+1
-				right_bound=intervals[a][1]
-
-
-		intervals_chunk = intervals[same_start:same_end]
-		intervals_chunk.sort(key=lambda x:x[0])
-		sorted_intervals[same_start:same_end] = intervals_chunk
-		intervals_chunk[same_start:same_end] = intervals_chunk
-
-		unique_intervals = []
-
-		i = 0
-		while i < len(sorted_intervals):
-			right = sorted_intervals[i][1]
-			left = sorted_intervals[i][0]
-			j = 1
-			while i+j < len(sorted_intervals) \
-				and right >= sorted_intervals[i+j][0]-1:
-				left = min(left, sorted_intervals[i+j][0])
-				right= sorted_intervals[i+j][1]
-				j+=1
-
-			unique_intervals.append([left, right])
-
-			i=i+j
-
-		return unique_intervals
+        return ret_list
 
 """
-My sorting solution above got tripped up on an example problem of non-overlapping but adjacent intervals.
-Still not sure why the given solution is incorrect. 
+Leetcode Solution 1: Treat as a Graph
 
-Leetcode had two solutions - graph and sorting
+1. Represent graph as an adjacency list. Insert directed edges in both directions to simulate edges
+2 Perform graph traversals from arbitrary unvisited nodes until all nodes have been visited. Stored visited nodes in a set as to not duplicate effort
+3. Consider each connected component, merging its intervals by constructing a new interval with start being the minimum start value, and end being the maximum end value
+
+Is basically brute force
 """
-
-"""
-Leetcode Sorting
-
-Sort by insertion.
-"""
-
-
-
+import collections
 class Solution:
-	def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+    def overlap(self,a,b):
+        return a[0] <= b[1] and b[0] <= a[1]
 
-		# They sort by LEFT interval
-		intervals.sort(key=lambda x: x[0])
+    def buildGraph(self, intervals):
+        graph = collections.defaultdict(list)
 
-		merged = []
+        for i, interval_i in enumerate(intervals):
+            for j in range(i+1, len(intervals)):
+                if self.overlap(interval_i, intervals[j]):
+                    # building adjacency list
+                    graph[tuple(interval_i)].append(intervals[j])
+                    graph[tuple(intervals[j])].append(interval_i)
 
-		for interval in intervals:
-			if not merged or merged[-1][1] < interval[0]:
-				merged.append(interval)
-			else:
-				# Merging. The upper bound becomes highest of the two upper bounds
-				merged[-1][1] = max(merged[-1][1], interval[1])
+        return graph 
 
-		return merged
-				
+    def mergeNodes(self, nodes):
+        min_start = min(node[0] for node in nodes)
+        max_end = max(node[1] for node in nodes)
+        return [min_start, max_end]
+
+    def getComponents(self, graph, intervals):
+        visited = set()
+        comp_number =0 
+        nodes_in_comp = collections.defaultdict(list)
+
+        def markComponentDFS(start):
+            stack =[start]
+            while stack:
+                node = tuple(stack.pop())
+                if node not in visited:
+                    visited.add(node)
+                    nodes_in_comp[comp_number].append(node)
+                    stack.extend(graph[node]) # same as stack+=graph[node]
+
+        for interval in intervals:
+            if tuple(interval) not in visited:
+                markComponentDFS(interval)
+                comp_number+=1 
+
+        return nodes_in_comp, comp_number 
+
+    def merge(self, intervals:List[List[int]])->List[List[int]]:
+        # Build adjancency list of all intervals
+        graph = self.buildGraph(intervals)
+        # Traverse all connected nodes for a given interval, building a dictionary of each overalpping intervals
+        nodes_in_comp, number_of_comps = self.getComponents(graph, intervals)
+
+        return [self.mergeNodes(nodes_in_comp[comp]) for comp in range(number_of_comps)]

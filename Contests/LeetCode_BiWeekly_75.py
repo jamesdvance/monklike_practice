@@ -91,5 +91,43 @@ can be of the same type.
 For example, given s = "001101", we cannot select the 1st, 3rd, and 5th buildings 
 as that would form "011" which is not allowed due to having two consecutive buildings of the same type.
 Return the number of valid ways to select 3 buildings.
+
+Approach - isn't this just n choose k ? - no, its not about plain combinations
+Sliding window approach seems to make sense
+DP problem? Seems like we can never move the start slider forward
+0 - 1 - 0 
+1 - 
+almost a tree
 """
+class Solution:
+    def numberOfWays(self, s: str) -> int:
+
+    	i =0 # window start
+    	j =0 # middle
+    	k =0 # end
+    	unq =0
+
+    	one_dig = [] # queue
+    	two_dig = [] # queue
+    	
+    	avail = []
+
+    	for d in range(len(s)):
+    		dig = s[d]
+    		opp = "1" if dig =="0" else "0"
+
+    		for e in range(len(s)):
+    			if e < d -1 or e > d+1:
+    				# non-neighbors
+    				if s[e] != dig: 
+    					
+    		# Check all available and increment unq if qualify
+    		# make own additions to available
+    		if len(avail)==0:
+    			avail.append({"next":opp, rem=2})
+
+    		for a in range(len(avail)):
+    			if avail.append(obj)
+
+
 
