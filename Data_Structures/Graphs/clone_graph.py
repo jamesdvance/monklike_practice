@@ -75,7 +75,7 @@ class Solution:
     	if not node:
     		return
 
-    	nodes_dict = {node.val:Node(val=node.val, [])}
+    	nodes_dict = {node.val:Node(node.val, [])}
     	nodes_queue = deque([node])
 
     	while nodes_queue:
@@ -83,7 +83,7 @@ class Solution:
 
     		for neighbor in n.neighbors:
 	    		if neighbor.val not in nodes_dict:
-	    			nodes_dict[neighbor.val]=Node(val=neighbor.val, [])
+	    			nodes_dict[neighbor.val]=Node(neighbor.val, [])
 	    			nodes_queue.append(neighbor)
 	    			
 	    		nodes_dict[n.val].neighbors.append(nodes_dict[neighbor.val])

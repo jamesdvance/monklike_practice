@@ -86,3 +86,51 @@ class Solution:
         
         else:
             return min(2**31, q)
+
+"""
+Attempt # 3
+Long division steps:
+divide entire divisor by first digit in dividend
+
+425, -25
+"""
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+
+        def stringify(i:int):
+            i_s = str(i)
+            if i_s[0]=='-':
+                return i_s[1:], True
+            else:
+                return i_s, False
+            
+        def make_neg(i:int):
+            return int("-"+str(i))
+
+        s_dividend,is_neg_dividend = stringify(dividend)
+        s_divisor, is_neg_divisor  = stringify(divisor)
+
+        quotient_str = ""
+        rem_str = ""
+        for j in range(len(s_dividend)):
+            mini_dividend = int(rem_str + s_dividend[j])
+            quot, rem = self.divide_small(mini_dividend, int(s_divisor))
+            quotient_str += str(quot)
+            rem_str = str(rem)
+
+        if (is_neg_divisor and not is_neg_dividend) \
+            or (is_neg_dividend and not is_neg_divisor):
+            return max(-2**31, make_neg(int(quotient_str)))
+        
+        else:
+            return min(2147483647, int(quotient_str))
+
+    def divide_small(self, dividend:int, divisor:int)->tuple: 
+          
+        total =0
+        while dividend - divisor >= 0:
+            total+=1
+            dividend-=divisor 
+
+        return total, dividend
+

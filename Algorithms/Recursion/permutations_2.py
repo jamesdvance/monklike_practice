@@ -64,3 +64,29 @@ class Solution:
 
 		return perms_list
 
+"""
+Leetcode solution includes a Counter() into the backtrack params, and only recursively calls the backtrack 
+if the counter is above 0
+and uses a stack
+"""
+from functools import Counter
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+
+    	results = []
+
+    	def backtrack(comb, counter):
+    		if len(comb) == len(nums):
+    			results.append(list(comb))
+    			return
+
+    		for num in counter:
+    			if counter[num] >0:
+    				comb.append(num)
+    				counter[num]-=1
+    				backtrack(comb,counter)
+    				comb.pop()
+    				counter[num]+=1
+
+    	backtrack([],Counter(nums))
+    	return results
