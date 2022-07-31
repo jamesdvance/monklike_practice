@@ -1,0 +1,3 @@
+def quick_union:
+
+	
