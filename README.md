@@ -1,5 +1,5 @@
 # Monklike Practice
-<center>![Be a Monk](media/monk_cartoon.jpg)</center>
+![Be a Monk](./media/monk_cartoon.jpg)
 This repo is dedicated to mastery of Algorithms and Data Structures. Explanations and understanding are as important as solving the problem. 
 This repo is designed to be a reference for anyone to see the logic and craft behind each solution. 
 
@@ -7,5 +7,7 @@ This repo is designed to be a reference for anyone to see the logic and craft be
 
 ## Layout 
 
-### [Algorithms](Algorithms)
-* [Backtracking](Algorithms/Backtracking)
+### [Algorithms](Algorithms/)
+* [Bitwise](Algorithms/Bitwise/)
+* [Divide And Conquer](Algorithms/Divide_and_Conquer)
+* [Dynamic Programming](Algorithms/Dynamic Programming)
