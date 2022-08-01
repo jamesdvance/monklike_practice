@@ -5,4 +5,4 @@ This repo is designed to be a reference for anyone to see the logic and craft be
 ## Layout 
 
 ### [Algorithms](Algorithms)
-* [Backtracking](Backtracking)
+* [Algorithms/Backtracking](Backtracking)
