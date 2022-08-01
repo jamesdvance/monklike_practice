@@ -29,8 +29,10 @@ Hints:
 1. Can you get the max/min of a certain subarray by using the max/min of a smaller subarray within it?
 2. Notice the max of the subarray from index i to j is equal to max of (max of subarray from index i to j-1 and nums[j])
 
-
 Brute Force
+[1,3,3]
+output 4
+
 
 """
 
@@ -42,39 +44,47 @@ class Solution:
     		l,r = nums[i],nums[i]
     		for j in range(i,n):
     			l = min(l, nums[j]) # take the min of next available 
-    			r = max(r,A[j])
+    			r = max(r,nums[j])
     			res += r-l 
 
     	return res 
 
 """
+Explanation: 
+Steps
+1. Iterate over each number in nums
+2. Iterate from that number to the end, taking the max and min of each number in the range
+[1,4,5,3,2]/47
+"""
+
+"""
 Optimized
 
 Uses stack 
+2. First, must understand that sum{ Max(subarray) - Min(subarray) } refactors into sum({Max(subarray)}) - sum(Min(subarray))
+3. Now, we can get the min and max by passing over the list and building a monotonic stack in each case 
+4. In order to do each of these loops efficiently in O(N) time, multiply a given minimum at some position i by the current smallest position - i 
+and i - previous smallest position
+
 """
 
 class Solution:
     def subArrayRanges(self, nums: List[int]) -> int:
-    	res = 0 
-    	inf = float('inf')
-    	A = [-inf] + nums + [-inf]
-    	s = [] 
-    	for i,x in enumerate(A):
-    		while s and A[s[-1]] > x:
-    			j = s.pop()
-    			k = s[-1]
-    			res-=A[j] * ( i-j)*(j-k)
-    		s.append(j)
+    	min_sum =0 
+    	max_sum =0 
+    	stack = []
+    	for j in range(n+1): # j is the range of 
+    		while stack and (j==n or nums[stack[-1]] > nums[j]):
+    			i = stack.pop() # index of the value which this is smaller than 
+    			prev_smaller = stack[-1] if stack else -1
+    			minsum+=nums[i] * (next_smaller - i) * (i-prev_smaller)
+    		stack.append(next_smaller)
 
-    	A = [inf] + nums + [inf]
-    	s= []
-    	for i,x in enumerate(A):
-    		while s and A[s[-1]] < x:
-    			j = s.pop()
-    			k = s[-1]
-    			res += A[j] * (j-i) *(j-k)
-    		s.append(i)
-    	return res
+    	stack = [] 
+    	while j 
+
+
+    	return maxsum - minsum 
 
 
 
@@ -83,16 +93,12 @@ class Solution:
 
 
 
-class Solution:
-	def subArrayRanges(self, arr:List[int])->int:
 
-		n = len(arr)
-		nge = [-1]*n 
-		pge = [-1]*n 
-		nse = [-1]*n
-		pse = [-1]*n 
 
-		st = [] 
-		for i in range(n):
-			while len(st) and arr[st[-1]] > arr[i]:
-				
+"""
+Explanation
+Intuition:
+Data Structure
+
+"""
+
