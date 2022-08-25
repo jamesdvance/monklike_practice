@@ -54,7 +54,11 @@ Explanation:
 Steps
 1. Iterate over each number in nums
 2. Iterate from that number to the end, taking the max and min of each number in the range
-[1,4,5,3,2]/47
+[1,4,5,3,2]/4
+min_sum=0
+max_sum =0 
+for j in range(6) 0 -5 
+
 """
 
 """
@@ -77,12 +81,16 @@ class Solution:
     		while stack and (j==n or nums[stack[-1]] > nums[j]):
     			i = stack.pop() # index of the value which this is smaller than 
     			prev_smaller = stack[-1] if stack else -1
-    			minsum+=nums[i] * (next_smaller - i) * (i-prev_smaller)
-    		stack.append(next_smaller)
+    			min_sum+=nums[i] * (j - i) * (i-prev_smaller)
+    		stack.append(j)
 
     	stack = [] 
-    	while j 
-
+    	for j in range(n+1): # j is the range of 
+    		while stack and (j==n or nums[stack[-1] < nums[j]]):
+    			i = stack.pop()
+    			prev_larger = stack[-1] if stack else -1
+    			max_sum+=nums[i]*(j-i)*(i-prev_larger)
+    		stack.append(j)
 
     	return maxsum - minsum 
 

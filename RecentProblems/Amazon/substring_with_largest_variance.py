@@ -67,7 +67,7 @@ Should do 'Maximum Subarray' and 'Maximum Product Subarray' to prepare
     def largestVariance(self, s: str) -> int:
         counter = Counter(s)
         res = 0
-        for a,b in itertools.permutations(counter,2): #N!
+        for a,b in itertools.permutations(counter,2):
             max_subarray=0
             has_a,has_b = False,False
             remain_a,remain_b = counter[a],counter[b]
@@ -114,3 +114,44 @@ Should do 'Maximum Subarray' and 'Maximum Product Subarray' to prepare
                 prev_min[ii]=min(prev_min[ii-1],cur)
                 prev_max[ii]=max(prev_max[ii-1],cur)
         return res
+
+# This was a right answer
+from itertools import permutations
+class Solution:
+    def largestVariance(self, s: str) -> int:
+        counter=Counter(s)
+        ans =0 
+        for a,b in permutations(counter.keys(),2):
+
+
+
+
+# This was a wrong answer
+from collections import Counter
+class Solution:
+    def largestVariance(self, s: str) -> int:
+        def kedanes(arr):
+            dp = [0]*n
+            max_sum =0
+            dp[0] = arr[0]
+            for i in range(1,n):
+                dp[i] = max(arr[i], arr[i]+dp[i-1])
+                max_sum = max(dp[i],max_sum)
+
+            return max_sum 
+
+        counter = Counter(s)
+        n = len(s)
+        ans= 0
+        for a,b in itertools.permutations(counter,2):
+            arr = [0]*n
+            for i in range(n):
+                if s[i] == a:
+                    arr[i] =1
+                elif s[i]==b:
+                    arr[i]=-1
+
+            max_sum = kedanes(arr)
+            ans = max(max_sum,ans)
+
+        return ans

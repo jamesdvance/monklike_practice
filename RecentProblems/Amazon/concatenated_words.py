@@ -30,17 +30,6 @@ datastructure: A queue of words of partially unmatched words or something
 
 And words can repeat 
 """
-from collections import deque
-class Solution:
-    def findAllConcatenatedWordsInADict(self, words: List[str]) -> List[str]:
-    	words.sort(key=lambda x:len(x))
-    	ret = []
-    	for i in range(len(words)):
-    		word = words[i]
-    		for j in range(i+1, len(words)):
-    			if len(words[j]) > len(word) and word in words[i]:
-
-
 
 """
 Discussion Solution 1: DFS
@@ -73,3 +62,7 @@ class Solution:
     			res.append(word)
 
     	return res
+
+"""
+
+"""

@@ -53,3 +53,8 @@ class Solution:
     		ret.append(products[l:r_anch])
 
     	return ret 
+
+
+"""
+Trie
+"""

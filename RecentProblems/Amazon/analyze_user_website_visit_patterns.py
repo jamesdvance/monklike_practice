@@ -39,7 +39,7 @@ class Solution:
 		patterns  = Counter()
 
 		for user, site in users.items():
-			patterns.update(Counter(set(combinations(site, 3)))) # doesn't matter the order but non-ordered 
+			patterns.update(Counter(set(combinations(site, 3)))) # dorder is preserved
 
 		return max(sorted(patterns), key=patterns.get)
 

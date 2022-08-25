@@ -64,7 +64,10 @@ class Solution:
     def reorderLogFiles(self, logs: List[str]) -> List[str]:
 
     	def get_key(log):
+            # split logs by first space. Before first space is iD. 
     		_id, rest = log.split(" ",maxsplit=1)
+            # The sorting key should be 0 since alphas first, then by the actual string (rest) then by id
+            # Since we want digits in same order, we give them the same sorting key and theyll line up in order they were given
     		return (0, rest,_id) if rest[0].isalpha() else (1,0)
 
     	return sorted(logs,key=get_key)

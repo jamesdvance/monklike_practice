@@ -35,6 +35,19 @@ AA
 
 i =0, j=1
 countUnq(A) -> 
+
+
+Solutions
+https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/discuss/2365561/Python%3A-O(26*N)
+
+https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/discuss/2334046/O(N)-DP-Python-simple-method
+"""
+
+"""
+Brute Force
+1. Iterate through s s**2 times with a double-loop
+2. Each time, return the total unique chars found in the substring. 
+3. Cache results for a given substring
 """
 from collections import defaultdict, Counter
 from functools import lru_cache
@@ -55,61 +68,74 @@ class Solution:
 
 		return ret 
 
-
 """
-Correct Brute Force
+Optimized # 1
+This solution keeps a cur value that both keeps getting incremented and keeps getting added to the final result.
+In that way, its similar to the Meta problem "Subarray Sum Equals K", where the number of subarrays keeps getting both incremented and added to the result at each pass.
+That's because we are counting *unique characters* so essentially the length of all unique strings needs to be constantly incremented
+The key part of the solution is that Each additional character added, adds itself as a subarray, and a unique subarray going back to its last occurence 
+The idea of an O(N) solution is we can iterate from 0 to n and there's enough information to calculate the total subarrays ending at each i 
 
-"""
+"ABA" -> 8
+"LEETCODE" -> 92
+
+ABA
+ans=0, curr=0, prev = {}
+i =0, ch = A
+prev = {A:[-1]}
+curr = 1 
+prev = {A: [-1, 0]}
+ans = 1 
+** A ** = 1 unique subarray
+i =1 ch = B
+prev = {A:[-1,0],B:[-1]}
+curr = 1 + 1-(-1) = 3 
+prev = {A:[-1,0],B:[-1:1]}
+ans = 1 + 3 = 4 
+** AB ** = A, B, AB unique subarrays with 4 unique characters total 
+i = 2, ch =A
+curr = 3 + (2-0) = 5
+curr = 5 - (0-(-1)) = 4  Here, we've subtracted out the occurance of A before B because in all subarrays its not unique 
+ans = 4 +4 = 8 
+Finished
 
 
 
-"""
-Optimized
 """
 class Solution:
-	def uniqueLetterString(self, s):
+	def uniqueLetterString(self,s:str)->int:
+		ans,curr,prev = 0,0,defaultdict(list)
+		for i, ch in enumerate(s):
+			if len(prev[ch]) ==0: # this is the first occurance
+				prev[ch].append(-1) # the second to last occurance was at -1. Everything between 0 and this string is a unique subarray for this char
+			curr+= (1 if i==0 else i - prev[ch][-1]) # Current total unique strings in all subarrays at this index i needs to have all positions between now and last occurance of ch
+			if len(prev[ch]) >1:
+				curr -= (prev[ch][-1] - prev[ch][-2]) # We need to subtract the recent position before this from this position. So that all 
+				# of those subarrays that we are counting now, do not get a count for this character between those positions
+				# note, we *alread* subtracted out the counts from this position to the current position
 
-		index = {c:[-1,-1] for c in ascii_uppercase}
-		res = 0
+			prev[ch].append(i)
+			ans+=curr 
+		return ans
+
+"""
+Optimized # 2 
+
+"""
+class Solution:
+	def uniqueLetterString(self,s:str)->int:
+		dp = [0] * (len(s)+1)
+		m = defaultdict(lambda: [-1]) # default is -1 
+
 		for i, c in enumerate(s):
-			k,j=index[c] # -1 
-			ret += (i-j) * (j-k) 
+			l = m[c] # total occurances of string so far. Defaults to [-1] 
+			dp[i] = dp[i-1] # At least as many unique substrings in the current string as in the previous (we'll fix the case where cur string is a dupe below)
+			dp[i]+=i-l[-1] # Adding length of chars between this one and its last occurance
+			if len(l) >=2:
+				dp[i] -= l[-1] - l[-2] # subtract distance between prev occurance and prev before that
 
-		for c in index:
-			k, j = index[c]
-			res += (len(s) - j) * (j-k) 
+			m[c].append(i) # update that list
 
-		return res % (10**9 + 7) 
+		return sum(dp) # this holds the sum of all unique substrings at each i
 
 
-"""
-"""
-# ord - returns an integer (Unicode code) representing a given character
-class Solution:
-	def uniqueLetterString(self, s):
-		res = [0]*(len(s)+1) # 
-		idxs = [[-1,-1]]*26
-		for i,c in enumerate(s):
-			code=ord(c)-ord('A')
-			first,second=idxs[code]
-			res[i+1]=1+res[i]+(i-1-second)-(second-first)
-			idxs[code]=[second,i]
-
-		return sum(res)%(10**9+7)
-
-"""
-Another solution that maybe doesn't rely on unicode vars 
-"""
-
-def uniqueLetterString(self, s):
-	map1 = collections.defaultdict(lambda:-1) # last index for this letter
-	map2 = collections.defaultdict(lambda:-1) # second to last index for this letter
-	cur =0
-	res =0
-	for i,ch in enumerate(s):
-		cur += (i-map1[ch]) - (map1[ch] - map2[ch])
-		map2[ch] = map1[ch]
-		map1[ch] =1 
-		res += cur 
-
-	return res
