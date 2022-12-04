@@ -12,7 +12,6 @@
 ### Builder
 * Is responsible for creating another type of object
 
-
 ## Encapsulate Private Names In a Class
 * Both _ and __ can be used to encapsulate private names in a class in Python. 
 * With double underscores, attributes cannot be overridden with inheritance
