@@ -11,5 +11,7 @@ Each solution contains a distinct board configuration of the n-queens' placement
 Constraints:
 
 1 <= n <= 9
+
+For each position, we need to be able to 
 """
 
