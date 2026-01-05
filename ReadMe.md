@@ -1,6 +1,12 @@
 # Monklike Practice
-A collection of algorithm and data structure problem solutions from the Neetcode 150 list.
 
+![Be a Monk](./media/monk_cartoon.jpg)
+<br>
+This repo is dedicated to mastery of Algorithms and Data Structures. Explanations and understanding are as important as solving the problem. 
+This repo is designed to be a reference for anyone to see the logic and craft behind each solution. 
+
+
+## Outline
 
 ## [Neetcode 150](Neetcode150/)
 - [Arrays and Hashing](Neetcode150/arrays_and_hashing/ReadMe.md)
